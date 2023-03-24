@@ -25,21 +25,31 @@ public class Currency {
         //COPPER
         addConversionRate("cp", "cp", 1.0);
         addConversionRate("cp", "sp", 1.0 / 10);
+        addConversionRate("cp", "ep", 1.0 / 50);
         addConversionRate("cp", "gp", 1.0 / 100);
         addConversionRate("cp", "pp", 1.0 / 1000);
         //SILVER
         addConversionRate("sp", "cp", 10.0);
         addConversionRate("sp", "sp", 1.0);
+        addConversionRate("sp", "ep", 1.0 / 5);
         addConversionRate("sp", "gp", 1.0 / 10);
         addConversionRate("sp", "pp", 1.0 / 100);
+        //ELECTRUM
+        addConversionRate("ep", "cp", 50.0);
+        addConversionRate("ep", "sp", 5.0);
+        addConversionRate("ep", "ep", 1.0);
+        addConversionRate("ep", "gp", 1.0 / 2);
+        addConversionRate("ep", "pp", 1.0 / 20);
         //GOLD
         addConversionRate("gp", "cp", 100.0);
         addConversionRate("gp", "sp", 10.0);
+        addConversionRate("gp", "ep", 2.0);
         addConversionRate("gp", "gp", 1.0);
         addConversionRate("gp", "pp", 1.0 / 10);
         //PLATINUM
         addConversionRate("pp", "cp", 1000.0);
         addConversionRate("pp", "sp", 100.0);
+        addConversionRate("pp", "ep", 20.0);
         addConversionRate("pp", "gp", 10.0);
         addConversionRate("pp", "pp", 1.0);
     }
