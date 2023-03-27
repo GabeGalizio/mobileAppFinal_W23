@@ -40,6 +40,13 @@ ListView charList;
 
     }
     public void saveData(View view){
+        //TODO
+        // -fix string definition timing (need to click add character twice for the desired name to show up)
+        // -add edit and remove functionality (im just lazy for that one, its pretty easily copied from the in class example
+        // & i'll do it later tonight if no one bothers)
+        // -implement currency conversion (should be easy, we have the second screen for it already)
+        // if you'd allow this ratty bitch to share their ideas, i think you can pass each Character as an extra through the intents
+        // so just send it over and edit it on the character intent
         AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Add new Character");
         final EditText input=new EditText(MainActivity.this);
@@ -48,7 +55,7 @@ ListView charList;
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                charName=input.getText().toString();
+                charName=input.getText().toString();//this only goes through after you click add character a second time, need to fix the timing
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -56,10 +56,9 @@ public class ListAdapter  extends BaseAdapter {
     private static class ViewHolder{
         private TextView label;
         public ViewHolder(View view){
-            label=view.findViewById(R.id.lv_chars);
+            label=view.findViewById(R.id.item_data);
         }
         void bindData(Character chara){
-            chara.setCharName("cringe");
             label.setText(chara.getCharName());
         }
     }
