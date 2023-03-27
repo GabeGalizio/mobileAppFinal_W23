@@ -59,6 +59,7 @@ public class ListAdapter  extends BaseAdapter {
             label=view.findViewById(R.id.lv_chars);
         }
         void bindData(Character chara){
+            chara.setCharName("cringe");
             label.setText(chara.getCharName());
         }
     }

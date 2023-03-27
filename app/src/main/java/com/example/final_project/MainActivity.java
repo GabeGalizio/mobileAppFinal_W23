@@ -26,7 +26,7 @@ private ExecutorService execSer= Executors.newSingleThreadExecutor();
 private Handler handler= HandlerCompat.createAsync(Looper.getMainLooper());
 private CharDB db;
 private ListAdapter listAdapter;
-private String charName;
+private String charName=" ";
 ListView charList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,39 +34,37 @@ ListView charList;
         setContentView(R.layout.activity_main);
         addChar=findViewById(R.id.addChar);
         charList=findViewById(R.id.lv_chars);
-        db= Room.databaseBuilder(getApplicationContext(), CharDB.class,"charDB").fallbackToDestructiveMigration().build();
-        addChar.setOnClickListener(new View.OnClickListener() {//our main activity has barely any space because of the listView, so i opted to grab user input
-            //from a notification instead
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Add new Character");
-                final EditText input=new EditText(MainActivity.this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-                builder.setView(input);
-                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        charName=input.getText().toString();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
+        db= Room.databaseBuilder(getApplicationContext(), CharDB.class,"charDB").fallbackToDestructiveMigration().allowMainThreadQueries().build();
 
-                    }
-                });
-                builder.show();
-
-            }
-        });
 
 
     }
     public void saveData(View view){
+        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Add new Character");
+        final EditText input=new EditText(MainActivity.this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        builder.setView(input);
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                charName=input.getText().toString();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+
+            }
+        });
+        builder.show();
+
         Character chara=new Character();
-        chara.setCharName(charName);
+        if(charName!=null)
+         chara.setCharName(charName);
+        else
+            chara.setCharName("wrong!");
         chara.setCp(0);
         chara.setSp(0);
         chara.setGp(0);
