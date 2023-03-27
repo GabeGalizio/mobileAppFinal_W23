@@ -19,9 +19,13 @@ public class Character {
     @ColumnInfo(name="silver")
     private int sp;
     @ColumnInfo(name="electrum")//could make this nullable later, but this is just the basics for now
+    @Nullable
     private int ep;
     @ColumnInfo(name="gold")
     private int gp;
+
+    @ColumnInfo(name="platinum")
+    private int pp;
 
     public int getId() {
         return id;
@@ -77,5 +81,13 @@ public class Character {
 
     public void setGp(int gp) {
         this.gp = gp;
+    }
+
+    public int getPp() {
+        return pp;
+    }
+
+    public void setPp(int pp) {
+        this.pp = pp;
     }
 }
