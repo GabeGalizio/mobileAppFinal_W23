@@ -11,11 +11,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
+import android.widget.BaseAdapter;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,14 +36,36 @@ ListView charList;
         addChar=findViewById(R.id.addChar);
         charList=findViewById(R.id.lv_chars);
         db= Room.databaseBuilder(getApplicationContext(), CharDB.class,"charDB").fallbackToDestructiveMigration().allowMainThreadQueries().build();
-
-
+        List<Character> characterList = db.charDao().getAllChars();
+        listAdapter=new ListAdapter(MainActivity.this, characterList);
+        charList.setAdapter(listAdapter);
+        charList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Character c = (Character) listAdapter.getItem(i);
+                execSer.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        int j = db.charDao().delete(c);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(j > 0){
+                                    Toast.makeText(MainActivity.this, "removed", Toast.LENGTH_SHORT).show();
+                                    listAdapter.removeData(i);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
 
     }
+
     public void saveData(View view){
         //TODO
-        // -fix string definition timing (need to click add character twice for the desired name to show up)
-        // -add edit and remove functionality (im just lazy for that one, its pretty easily copied from the in class example
+        // -add edit functionality (im just lazy for that one, its pretty easily copied from the in class example
         // & i'll do it later tonight if no one bothers)
         // -implement currency conversion (should be easy, we have the second screen for it already)
         // if you'd allow this ratty bitch to share their ideas, i think you can pass each Character as an extra through the intents
@@ -56,6 +79,36 @@ ListView charList;
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 charName=input.getText().toString();//this only goes through after you click add character a second time, need to fix the timing
+                Character chara=new Character();
+                if(charName!=null)
+                    chara.setCharName(charName);
+                else
+                    chara.setCharName("wrong!");
+                chara.setCp(0);
+                chara.setSp(0);
+                chara.setGp(0);
+                chara.setPp(0);
+                execSer.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        long id=db.charDao().insert(chara);
+                        List<Character> characterList=db.charDao().getAllChars();
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (id>0){
+                                    Toast.makeText(MainActivity.this, "Character creation success!",Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Toast.makeText(MainActivity.this, "Character creation failed.",Toast.LENGTH_SHORT).show();
+                                }
+                                listAdapter=new ListAdapter(MainActivity.this, characterList);
+                                charList.setAdapter(listAdapter);
+
+                            }
+                        });
+                    }
+                });
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -67,35 +120,7 @@ ListView charList;
         });
         builder.show();
 
-        Character chara=new Character();
-        if(charName!=null)
-         chara.setCharName(charName);
-        else
-            chara.setCharName("wrong!");
-        chara.setCp(0);
-        chara.setSp(0);
-        chara.setGp(0);
-        chara.setPp(0);
-        execSer.execute(new Runnable() {
-            @Override
-            public void run() {
-                long id=db.charDao().insert(chara);
-                List<Character> characterList=db.charDao().getAllChars();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (id>0){
-                            Toast.makeText(MainActivity.this, "Character creation success!",Toast.LENGTH_SHORT);
-                        }
-                        else {
-                            Toast.makeText(MainActivity.this, "Character creation failed.",Toast.LENGTH_SHORT);
-                        }
-                        listAdapter=new ListAdapter(MainActivity.this, characterList);
-                        charList.setAdapter(listAdapter);
-                    }
-                });
-            }
-        });
+
     }
 
 }
