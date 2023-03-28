@@ -6,6 +6,7 @@ import androidx.room.Room;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -61,6 +62,23 @@ ListView charList;
             }
         });
 
+        charList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Character c = (Character) listAdapter.getItem(i);
+                Intent edit_Class = new Intent(MainActivity.this, CharacterActivity.class);
+                edit_Class.putExtra("Name",c.getCharName());
+                edit_Class.putExtra("cp", c.getCp());
+                edit_Class.putExtra("ep", c.getEp());
+                edit_Class.putExtra("gp", c.getGp());
+                edit_Class.putExtra("pp", c.getPp());
+                edit_Class.putExtra("sp", c.getSp());
+                edit_Class.putExtra("ID", c.getId());
+                startActivity(edit_Class);
+                return false;
+
+            }
+        });
     }
 
     public void saveData(View view){
