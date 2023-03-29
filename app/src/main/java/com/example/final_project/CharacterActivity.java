@@ -10,12 +10,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.nio.channels.InterruptedByTimeoutException;
-import java.sql.Array;
-import java.util.ArrayList;
-
 public class CharacterActivity extends AppCompatActivity {
 
     Button btn;
@@ -50,26 +44,15 @@ public class CharacterActivity extends AppCompatActivity {
             --> Maybe make these custom if we want to make them look nice? I know you can do custom
                 views
          */
-        LinearLayout parent = findViewById(R.id.currencies_layout);
+        LinearLayout parent = findViewById(R.id.currencies_row);
         /* If we're editing currencies dynamically then this should be a for loop for each currency
             instead */
-        // ArrayList<EditText> currencies = new ArrayList<EditText>();
-        EditText cpET = new EditText(this);
-        EditText epET = new EditText(this);
-        EditText gpET = new EditText(this);
-        EditText ppET = new EditText(this);
-        EditText spET = new EditText(this);
-        //currencies.forEach((n) -> parent.addView(n));
-        parent.addView(cpET);
-        parent.addView(epET);
-        parent.addView(gpET);
-        parent.addView(ppET);
-        parent.addView(spET);
-        cpET.setText(Integer.toString(Cp));
-        epET.setText(Integer.toString(Ep));
-        gpET.setText(Integer.toString(Gp));
-        ppET.setText(Integer.toString(Pp));
-        spET.setText(Integer.toString(Sp));
+        CurrencyView cv = new CurrencyView(this);
+        parent.addView(cv);
+        cv.setLabelText("Test");
+        cv.setEditText("1");
+        CurrencyView cv2 = new CurrencyView(this);
+        parent.addView(cv2);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,9 +68,6 @@ public class CharacterActivity extends AppCompatActivity {
             }
         });
 
-
-    }
-    public void addCurrency(EditText et, int value) {
 
     }
 }
