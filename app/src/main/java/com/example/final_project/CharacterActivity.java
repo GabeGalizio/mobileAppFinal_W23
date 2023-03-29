@@ -1,15 +1,19 @@
 package com.example.final_project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+/* TODO: Load data? */
 public class CharacterActivity extends AppCompatActivity {
 
     Button btn;
@@ -17,8 +21,6 @@ public class CharacterActivity extends AppCompatActivity {
 
     int Id, Cp, Ep, Gp, Pp, Sp;
     String Cname;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,7 @@ public class CharacterActivity extends AppCompatActivity {
 
         Cname = intents.getStringExtra("Name");
         Id = intents.getIntExtra("ID",0);
+        //
         Cp = intents.getIntExtra("cp",0);
         Ep = intents.getIntExtra("ep",0);
         Gp = intents.getIntExtra("gp",0);
@@ -44,15 +47,24 @@ public class CharacterActivity extends AppCompatActivity {
             --> Maybe make these custom if we want to make them look nice? I know you can do custom
                 views
          */
-        LinearLayout parent = findViewById(R.id.currencies_row);
+        LinearLayout parent = findViewById(R.id.currencies_layout);
+        LinearLayout firstrow = findViewById(R.id.currencies_row);
+        LinearLayout secondrow = new LinearLayout(this);
+        secondrow.setGravity(Gravity.CENTER);
+        secondrow.setOrientation(LinearLayout.HORIZONTAL);
+        parent.addView(secondrow);
         /* If we're editing currencies dynamically then this should be a for loop for each currency
-            instead */
-        CurrencyView cv = new CurrencyView(this);
-        parent.addView(cv);
-        cv.setLabelText("Test");
-        cv.setEditText("1");
-        CurrencyView cv2 = new CurrencyView(this);
-        parent.addView(cv2);
+            instead. Make a new horizontal linear layout for every 3 or so currencies */
+        CurrencyView cpCV = addCurrency("CP", 0, this);
+        CurrencyView epCV = addCurrency("EP", 0, this);
+        CurrencyView gpCV = addCurrency("GP", 0, this);
+        firstrow.addView(cpCV);
+        firstrow.addView(epCV);
+        firstrow.addView(gpCV);
+        CurrencyView ppCV = addCurrency("PP", 0, this);
+        CurrencyView spCV = addCurrency("SP", 0, this);
+        secondrow.addView(ppCV);
+        secondrow.addView(spCV);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +81,15 @@ public class CharacterActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    // addCurrency - Just sets up a currency view for the given count, name. Maybe add to layout
+    // programmatically as well
+    public CurrencyView addCurrency(String cname, int count, @NonNull Context context) {
+        CurrencyView cv = new CurrencyView(context);
+        cv.setLabelText(cname);
+        cv.setEditText(Integer.toString(count));
+        return cv;
     }
 }
 
