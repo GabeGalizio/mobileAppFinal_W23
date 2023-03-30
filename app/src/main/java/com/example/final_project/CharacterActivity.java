@@ -15,14 +15,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 /* TODO: Load data? */
 public class CharacterActivity extends AppCompatActivity {
 
-    Button btn;
+    Button btn, convertBtn;
     TextView tv_name;
+    EditText amountFrom;
+    TextView amountTo;
+    Spinner currencyFrom, currencyTo;
 
     int Id, Cp, Ep, Gp, Pp, Sp;
     String Cname, newName;
@@ -33,7 +37,12 @@ public class CharacterActivity extends AppCompatActivity {
         Intent intents = getIntent();
 
         btn = findViewById(R.id.backToHome);
+        convertBtn = findViewById(R.id.convertBtn);
         tv_name = findViewById(R.id.charName);
+        amountFrom = findViewById(R.id.amountFrom);
+        amountTo = findViewById(R.id.amountTo);
+        currencyFrom = findViewById(R.id.currencyFrom);
+        currencyTo = findViewById(R.id.currencyTo);
 
         Cname = intents.getStringExtra("Name");
         Id = intents.getIntExtra("ID",0);
@@ -66,6 +75,7 @@ public class CharacterActivity extends AppCompatActivity {
                             Cname = newName;
                             tv_name.setText(Cname);
                             System.out.println(Cname);
+
                             Toast.makeText(CharacterActivity.this, "Named changed", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -135,6 +145,24 @@ public class CharacterActivity extends AppCompatActivity {
             }
         });
 
+        // Currency conversion.
+        convertBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int amount = Integer.parseInt(amountFrom.getText().toString());
+
+                String currency1 = currencyFrom.getSelectedItem().toString();
+                String currency2 = currencyTo.getSelectedItem().toString();
+
+                int factor = 0;
+                // Get factor for converting currency 1 to currency 2.
+                // How to handle remainder? Probably want the remainder as original currency?
+
+                amountTo.setText(Integer.toString(amount * factor));
+
+                // TODO: Get specific currency element?
+            }
+        });
 
     }
 

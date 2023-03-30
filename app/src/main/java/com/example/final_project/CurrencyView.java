@@ -1,11 +1,15 @@
 package com.example.final_project;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -15,15 +19,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
+import org.w3c.dom.Text;
+
 public class CurrencyView extends CardView {
     private LinearLayout layout;
-    private EditText et;
+    private Button ctv;
     private TextView tv;
 
     public CurrencyView(@NonNull Context context) {
         super(context);
         layout = new LinearLayout(context);
-        et = new EditText(context);
+        ctv = new Button(context);
         tv = new TextView(context);
         this.addView(layout);
         // CARD PARAMS
@@ -32,30 +38,56 @@ public class CurrencyView extends CardView {
         // LAYOUT PARAMS
         layout.setOrientation(LinearLayout.VERTICAL);
         ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        // EDIT TEXT PARAMS
-        //et.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
-        et.setText("0");
-        et.setTextSize(34);
-        et.setTextIsSelectable(true);
-        et.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+        // CURRENCY TEXT PARAMS
+        ctv.setText("0");
+        ctv.setTextSize(34);
+        ctv.setTextAlignment(TEXT_ALIGNMENT_CENTER);
         // TEXTVIEW PARAMS
         tv.setText("Currency Name");
         tv.setTextSize(18);
         tv.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+
+        // Currency onClick
+        ctv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                builder.setTitle("Enter Amount");
+                final EditText input=new EditText(context);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
+                builder.setView(input);
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Save currency here?
+                        String text = input.getText().toString();
+                        if(text.matches("")) {
+                            text = "";
+                        }
+                        ctv.setText(text);
+                    }
+                });
+                builder.show();
+            }
+        });
         // Adding views to layout
-        layout.addView(et, params);
+        layout.addView(ctv, params);
         layout.addView(tv, params);
     }
 
     public void setEditText(String text) {
-        this.et.setText(text);
+        this.ctv.setText(text);
     }
 
     public String getText(){
-        return this.et.getText().toString();
+        return this.ctv.getText().toString();
     }
 
     public void setLabelText(String text) {
         this.tv.setText(text);
+    }
+
+    public String getCurrencyName() {
+        return this.tv.getText().toString();
     }
 }
