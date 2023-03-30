@@ -3,6 +3,7 @@ package com.example.final_project;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 /* TODO: Load data? */
 public class CharacterActivity extends AppCompatActivity {
 
@@ -28,6 +31,8 @@ public class CharacterActivity extends AppCompatActivity {
     TextView amountTo;
     Spinner currencyFrom, currencyTo;
 
+    private CharDB db;
+
     int Id, Cp, Ep, Gp, Pp, Sp;
     String Cname, newName;
     @Override
@@ -35,6 +40,9 @@ public class CharacterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character);
         Intent intents = getIntent();
+
+        db= Room.databaseBuilder(getApplicationContext(), CharDB.class,"charDB").fallbackToDestructiveMigration().allowMainThreadQueries().build();
+        List<Character> characterList = db.charDao().getAllChars();
 
         btn = findViewById(R.id.backToHome);
         convertBtn = findViewById(R.id.convertBtn);
@@ -69,13 +77,18 @@ public class CharacterActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         newName = input.getText().toString();
-                        if (newName.equals(null)){
+                        if (newName.equals("")){
                             Toast.makeText(CharacterActivity.this, "Empty name not allowed", Toast.LENGTH_SHORT).show();
                         }else{
-                            Cname = newName;
-                            tv_name.setText(Cname);
-                            System.out.println(Cname);
-
+                            tv_name.setText(newName);
+                            System.out.println(newName);
+                            for (Character c: characterList) {
+                                if(c.getCharName().equals(Cname)) {
+                                    c.setCharName(newName);
+                                    db.charDao().update(c);
+                                    break;
+                                }
+                            }
                             Toast.makeText(CharacterActivity.this, "Named changed", Toast.LENGTH_SHORT).show();
                         }
                     }

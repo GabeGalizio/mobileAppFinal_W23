@@ -15,10 +15,8 @@ public interface CharDao {
     long insert(Character character);
     @Query("select * from charTable")
     List<Character> getAllChars();
-
     @Delete
     int delete(Character character);
-
     @Update
     int update(Character character);
 
