@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.BaseAdapter;
 import java.util.List;
@@ -140,6 +141,27 @@ ListView charList;
         builder.show();
 
 
+    }
+
+    public void helpPopup(View view) {
+        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+        /*AlertDialog ad = builder.create();
+        ad.getWindow().setLayout(); */
+        builder.setTitle("Help");
+        final TextView helpText = new TextView(MainActivity.this);
+        helpText.setTextSize(20);
+        helpText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        helpText.setText("Select ADD NEW CHARACTER to add a new character\nTAP a character to delete it\nLONG PRESS a character to edit a character");
+        builder.setView(helpText);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+
+            }
+        });
+        builder.show();
     }
     @Override
     public void onResume() {

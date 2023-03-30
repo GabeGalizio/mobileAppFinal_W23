@@ -13,10 +13,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
-<<<<<<< Updated upstream
-=======
 import android.widget.AdapterView;
->>>>>>> Stashed changes
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -191,7 +188,7 @@ public class CharacterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int amount = Integer.parseInt(amountFrom.getText().toString());
 
-                String currency1 = currencyFrom.getSelectedItem().toString()
+                String currency1 = currencyFrom.getSelectedItem().toString();
                 String currency2 = currencyTo.getSelectedItem().toString();
 
                 int characterCurrency1 = -1;

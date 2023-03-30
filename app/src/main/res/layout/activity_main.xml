@@ -6,17 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/addChar"
+    <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="Add new character..."
-        android:onClick="saveData"
+        android:layout_height="60sp"
+        android:layout_margin="5sp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/addChar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:onClick="saveData"
+            android:text="Add new character..." />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/helpbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:clickable="true"
+            android:onClick="helpPopup"
+            app:srcCompat="@android:drawable/ic_menu_help" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/lv_chars"
@@ -25,6 +44,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addChar" />
+        app:layout_constraintTop_toBottomOf="@+id/ll" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
