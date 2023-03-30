@@ -13,6 +13,10 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
+<<<<<<< Updated upstream
+=======
+import android.widget.AdapterView;
+>>>>>>> Stashed changes
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /* TODO: Load data? */
@@ -75,7 +80,20 @@ public class CharacterActivity extends AppCompatActivity {
         System.out.println(Cp+" " +Ep+" "+ Gp+" "+ Pp+" "+ Sp);
         tv_name.setText(Cname);
 
+        //Spinner setup
+        ArrayList<String> currenciesStrings = new ArrayList<>();
+        currenciesStrings.add("cp");
+        currenciesStrings.add("ep");
+        currenciesStrings.add("gp");
+        currenciesStrings.add("pp");
+        currenciesStrings.add("sp");
 
+        ArrayAdapter<String> spinner1Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, currenciesStrings);
+        spinner1Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> spinner2Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, currenciesStrings);
+        spinner2Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        currencyTo.setAdapter(spinner1Adapter);
+        currencyFrom.setAdapter(spinner2Adapter);
         tv_name.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -98,7 +116,7 @@ public class CharacterActivity extends AppCompatActivity {
                                     finalCurrentChar.setCharName(newName);
                                     db.charDao().update(finalCurrentChar);
                             }
-                            Toast.makeText(CharacterActivity.this, "Named changed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CharacterActivity.this, "Name changed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -173,16 +191,41 @@ public class CharacterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int amount = Integer.parseInt(amountFrom.getText().toString());
 
-                String currency1 = currencyFrom.getSelectedItem().toString();
+                String currency1 = currencyFrom.getSelectedItem().toString()
                 String currency2 = currencyTo.getSelectedItem().toString();
 
-                int factor = 0;
-                // Get factor for converting currency 1 to currency 2.
-                // How to handle remainder? Probably want the remainder as original currency?
+                int characterCurrency1 = -1;
+                switch(currency1) {
+                    case "cp":
+                        characterCurrency1 = finalCurrentChar.getCp();
+                        break;
+                    case "ep":
+                        characterCurrency1 = finalCurrentChar.getEp();
+                        break;
+                    case "gp":
+                        characterCurrency1 = finalCurrentChar.getGp();
+                        break;
+                    case "pp":
+                        characterCurrency1 = finalCurrentChar.getPp();
+                        break;
+                    case "sp":
+                        characterCurrency1 = finalCurrentChar.getSp();
+                        break;
+                    default:
+                        // TODO Give notif that currency type is invalid
+                        return;
+                }
 
-                amountTo.setText(Integer.toString(amount * factor));
+                if(amount > characterCurrency1) {
+                    // TODO Give notif there is not enough currency to convert
+                    return;
+                }
 
-                // TODO: Get specific currency element?
+                Currency converter = new Currency();
+                double converted = converter.convertCurrency((double)amount, currency1, currency2);
+
+
+                amountTo.setText(Integer.toString((int)converted));
             }
         });
 
