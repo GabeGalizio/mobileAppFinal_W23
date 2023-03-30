@@ -240,19 +240,19 @@ public class CharacterActivity extends AppCompatActivity {
                                 finalCurrentChar.setCp(Integer.parseInt(cpCV.getText()) - (int)amount);
                                 break;
                             case "sp":
-                                spCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                spCV.setButtonText(Integer.toString(Integer.parseInt(spCV.getText().toString())-amount));
                                 finalCurrentChar.setCp(Integer.parseInt(spCV.getText()) - (int)amount);
                                 break;
                             case "gp":
-                                gpCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                gpCV.setButtonText(Integer.toString(Integer.parseInt(gpCV.getText().toString())-amount));
                                 finalCurrentChar.setCp(Integer.parseInt(gpCV.getText()) - (int)amount);
                                 break;
                             case "pp":
-                                ppCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                ppCV.setButtonText(Integer.toString(Integer.parseInt(ppCV.getText().toString())-amount));
                                 finalCurrentChar.setCp(Integer.parseInt(ppCV.getText()) - (int)amount);
                                 break;
                             case "ep":
-                                epCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                epCV.setButtonText(Integer.toString(Integer.parseInt(epCV.getText().toString())-amount));
                                 finalCurrentChar.setCp(Integer.parseInt(epCV.getText()) - (int)amount);
                                 break;
 
@@ -330,19 +330,20 @@ public class CharacterActivity extends AppCompatActivity {
                         if(finalCurrentChar != null) {
                             // I'm sorry God for this switch case
                             switch(cname) {
-                                case "cp":
+                                case "CP":
                                     finalCurrentChar.setCp(value);
+                                    System.out.println("Character cp is" + finalCurrentChar.getCp());
                                     break;
-                                case "ep":
+                                case "EP":
                                     finalCurrentChar.setEp(value);
                                     break;
-                                case "gp":
+                                case "GP":
                                     finalCurrentChar.setGp(value);
                                     break;
-                                case "pp":
+                                case "PP":
                                     finalCurrentChar.setPp(value);
                                     break;
-                                case "sp":
+                                case "SP":
                                     finalCurrentChar.setSp(value);
                                     break;
                                 default:
