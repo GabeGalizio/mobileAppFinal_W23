@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -43,7 +44,7 @@ public class CharacterActivity extends AppCompatActivity {
 
         db= Room.databaseBuilder(getApplicationContext(), CharDB.class,"charDB").fallbackToDestructiveMigration().allowMainThreadQueries().build();
         List<Character> characterList = db.charDao().getAllChars();
-
+        String[] currencies={"cp","sp","gp","ep","pp"};
         btn = findViewById(R.id.backToHome);
         convertBtn = findViewById(R.id.convertBtn);
         tv_name = findViewById(R.id.charName);
@@ -51,7 +52,9 @@ public class CharacterActivity extends AppCompatActivity {
         amountTo = findViewById(R.id.amountTo);
         currencyFrom = findViewById(R.id.currencyFrom);
         currencyTo = findViewById(R.id.currencyTo);
-
+        ArrayAdapter aa=new ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, currencies);
+        currencyFrom.setAdapter(aa);
+        currencyTo.setAdapter(aa);
         Cname = intents.getStringExtra("Name");
         Id = intents.getIntExtra("ID",0);
         Character currentChar = null;
