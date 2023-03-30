@@ -63,14 +63,6 @@ public class CharacterActivity extends AppCompatActivity {
         }
         Character finalCurrentChar = currentChar;
 
-        // Fuck intents all my homies hate intents
-        /* Cp = intents.getIntExtra("cp",0);
-        System.out.println(Cp +" cp in chararters");
-        Ep = intents.getIntExtra("ep",0);
-        Gp = intents.getIntExtra("gp",0);
-        Pp = intents.getIntExtra("pp",0);
-        Sp = intents.getIntExtra("sp",0);
-         */
         Cp = finalCurrentChar.getCp();
         Ep = finalCurrentChar.getEp();
         Gp = finalCurrentChar.getGp();

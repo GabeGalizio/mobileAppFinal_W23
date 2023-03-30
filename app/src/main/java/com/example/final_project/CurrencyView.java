@@ -48,29 +48,6 @@ public class CurrencyView extends CardView {
         tv.setTextSize(18);
         tv.setTextAlignment(TEXT_ALIGNMENT_CENTER);
 
-        // Currency onClick -- Move to CharacterActivity.
-        /*ctv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder=new AlertDialog.Builder(context);
-                builder.setTitle("Enter Amount");
-                final EditText input=new EditText(context);
-                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
-                builder.setView(input);
-                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // Save currency here?
-                        String text = input.getText().toString();
-                        if(text.matches("")) {
-                            text = "";
-                        }
-                        ctv.setText(text);
-                    }
-                });
-                builder.show();
-            }
-        }); */
         // Adding views to layout
         layout.addView(ctv, params);
         layout.addView(tv, params);
