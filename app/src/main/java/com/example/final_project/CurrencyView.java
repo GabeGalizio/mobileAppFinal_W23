@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.room.Room;
 
 import org.w3c.dom.Text;
 
@@ -47,8 +48,8 @@ public class CurrencyView extends CardView {
         tv.setTextSize(18);
         tv.setTextAlignment(TEXT_ALIGNMENT_CENTER);
 
-        // Currency onClick
-        ctv.setOnClickListener(new OnClickListener() {
+        // Currency onClick -- Move to CharacterActivity.
+        /*ctv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder=new AlertDialog.Builder(context);
@@ -69,13 +70,13 @@ public class CurrencyView extends CardView {
                 });
                 builder.show();
             }
-        });
+        }); */
         // Adding views to layout
         layout.addView(ctv, params);
         layout.addView(tv, params);
     }
 
-    public void setEditText(String text) {
+    public void setButtonText(String text) {
         this.ctv.setText(text);
     }
 
@@ -89,5 +90,9 @@ public class CurrencyView extends CardView {
 
     public String getCurrencyName() {
         return this.tv.getText().toString();
+    }
+
+    public void setButtonOnClickListener(View.OnClickListener listener) {
+        ctv.setOnClickListener(listener);
     }
 }
