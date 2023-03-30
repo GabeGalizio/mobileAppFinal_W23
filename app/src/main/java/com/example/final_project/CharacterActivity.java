@@ -215,36 +215,45 @@ public class CharacterActivity extends AppCompatActivity {
                         return;
                 }
 
+                System.out.println(characterCurrency1);
                 if(amount > characterCurrency1) {
-                    Toast.makeText(CharacterActivity.this, "Not enough "+characterCurrency1+"!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CharacterActivity.this, "Not enough "+currency1+"!",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(currency1.equals(currency2)) {
+                    Toast.makeText(CharacterActivity.this, "Cannot convert between same currencies.",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 Currency converter = new Currency();
                 double converted = converter.convertCurrency((double)amount, currency1, currency2);
 
-
-                amountTo.setText(Integer.toString((int)converted));
                 android.app.AlertDialog.Builder builder=new android.app.AlertDialog.Builder(CharacterActivity.this);
-                builder.setTitle("Really convert "+amount+currency1+"to "+converted+currency2+"?");
+                builder.setTitle("Really convert "+(int)amount+currency1+" to "+(int)converted+currency2+"?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         switch(currency1){
                             case "cp":
                                 cpCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                finalCurrentChar.setCp(Integer.parseInt(cpCV.getText()) - (int)amount);
                                 break;
                             case "sp":
                                 spCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                finalCurrentChar.setCp(Integer.parseInt(spCV.getText()) - (int)amount);
                                 break;
                             case "gp":
                                 gpCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                finalCurrentChar.setCp(Integer.parseInt(gpCV.getText()) - (int)amount);
                                 break;
                             case "pp":
                                 ppCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                finalCurrentChar.setCp(Integer.parseInt(ppCV.getText()) - (int)amount);
                                 break;
                             case "ep":
                                 epCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                finalCurrentChar.setCp(Integer.parseInt(epCV.getText()) - (int)amount);
                                 break;
 
                             default:
@@ -253,24 +262,31 @@ public class CharacterActivity extends AppCompatActivity {
                         }
                         switch(currency2){
                             case "cp":
-                                cpCV.setButtonText(Integer.toString((int)converted));
+                                cpCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText()) + (int)converted));
+                                finalCurrentChar.setCp(Integer.parseInt(cpCV.getText()) + (int)converted);
                                 break;
                             case "sp":
-                                spCV.setButtonText(Integer.toString((int)converted));
+                                spCV.setButtonText(Integer.toString(Integer.parseInt(spCV.getText()) + (int)converted));
+                                finalCurrentChar.setSp(Integer.parseInt(spCV.getText()) + (int)converted);
                                 break;
                             case "gp":
-                                gpCV.setButtonText(Integer.toString((int)converted));
+                                gpCV.setButtonText(Integer.toString(Integer.parseInt(gpCV.getText()) + (int)converted));
+                                finalCurrentChar.setGp(Integer.parseInt(gpCV.getText()) + (int)converted);
                                 break;
                             case "pp":
-                                ppCV.setButtonText(Integer.toString((int)converted));
+                                ppCV.setButtonText(Integer.toString(Integer.parseInt(ppCV.getText()) + (int)converted));
+                                finalCurrentChar.setPp(Integer.parseInt(ppCV.getText()) + (int)converted);
                                 break;
                             case "ep":
-                                epCV.setButtonText(Integer.toString((int)converted));
+                                epCV.setButtonText(Integer.toString(Integer.parseInt(epCV.getText()) + (int)converted));
+                                finalCurrentChar.setEp(Integer.parseInt(epCV.getText()) + (int)converted);
                                 break;
                             default:
                                 Toast.makeText(CharacterActivity.this,"Invalid currency 1!",Toast.LENGTH_SHORT).show();
                                 return;
                         }
+                        amountTo.setText(Integer.toString((int)converted));
+                        db.charDao().update(finalCurrentChar);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

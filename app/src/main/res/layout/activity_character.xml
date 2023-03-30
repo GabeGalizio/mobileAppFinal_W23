@@ -75,9 +75,9 @@
 
         <EditText
             android:id="@+id/amountFrom"
-            android:layout_width="66dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:ems="10"
             android:inputType="number" />
 
@@ -86,7 +86,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
