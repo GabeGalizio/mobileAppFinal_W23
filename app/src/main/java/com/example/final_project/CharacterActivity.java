@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,7 +26,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /* TODO: Load data? */
 public class CharacterActivity extends AppCompatActivity {
@@ -186,6 +190,7 @@ public class CharacterActivity extends AppCompatActivity {
 
         // Currency conversion.
         convertBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 int amount = Integer.parseInt(amountFrom.getText().toString());
@@ -193,26 +198,18 @@ public class CharacterActivity extends AppCompatActivity {
                 String currency1 = currencyFrom.getSelectedItem().toString();
                 String currency2 = currencyTo.getSelectedItem().toString();
 
-                int characterCurrency1 = -1;
-                switch(currency1) {
-                    case "cp":
-                        characterCurrency1 = finalCurrentChar.getCp();
-                        break;
-                    case "ep":
-                        characterCurrency1 = finalCurrentChar.getEp();
-                        break;
-                    case "gp":
-                        characterCurrency1 = finalCurrentChar.getGp();
-                        break;
-                    case "pp":
-                        characterCurrency1 = finalCurrentChar.getPp();
-                        break;
-                    case "sp":
-                        characterCurrency1 = finalCurrentChar.getSp();
-                        break;
-                    default:
-                        Toast.makeText(CharacterActivity.this, "Invalid Currency!", Toast.LENGTH_SHORT).show();
-                        return;
+                final Map<String, Integer> CURRENCY_MAP = new HashMap<>();
+
+                CURRENCY_MAP.put("cp", finalCurrentChar.getCp());
+                CURRENCY_MAP.put("ep", finalCurrentChar.getEp());
+                CURRENCY_MAP.put("gp", finalCurrentChar.getGp());
+                CURRENCY_MAP.put("pp", finalCurrentChar.getPp());
+                CURRENCY_MAP.put("sp", finalCurrentChar.getSp());
+
+                int characterCurrency1 = CURRENCY_MAP.getOrDefault(currency1, -1);
+                if (characterCurrency1 == -1) {
+                    Toast.makeText(CharacterActivity.this, "Invalid Currency!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 if(amount > characterCurrency1) {
@@ -232,19 +229,19 @@ public class CharacterActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         switch(currency1){
                             case "cp":
-                                cpCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                cpCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText())-amount));
                                 break;
                             case "sp":
-                                spCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                spCV.setButtonText(Integer.toString(Integer.parseInt(spCV.getText())-amount));
                                 break;
                             case "gp":
-                                gpCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                gpCV.setButtonText(Integer.toString(Integer.parseInt(gpCV.getText())-amount));
                                 break;
                             case "pp":
-                                ppCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                ppCV.setButtonText(Integer.toString(Integer.parseInt(ppCV.getText())-amount));
                                 break;
                             case "ep":
-                                epCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                epCV.setButtonText(Integer.toString(Integer.parseInt(epCV.getText())-amount));
                                 break;
 
                             default:
@@ -269,8 +266,8 @@ public class CharacterActivity extends AppCompatActivity {
                                 break;
                             default:
                                 Toast.makeText(CharacterActivity.this,"Invalid currency 1!",Toast.LENGTH_SHORT).show();
-                                return;
                         }
+                        System.out.println(String.format("C1: %s\tC2: %s", amount, converted));
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -312,27 +309,18 @@ public class CharacterActivity extends AppCompatActivity {
                         //Update db entry
                         int value = Integer.parseInt(text);
                         if(character != null) {
-                            // I'm sorry God for this switch case
-                            switch(cname) {
-                                case "cp":
-                                    character.setCp(value);
-                                    break;
-                                case "ep":
-                                    character.setEp(value);
-                                    break;
-                                case "gp":
-                                    character.setGp(value);
-                                    break;
-                                case "pp":
-                                    character.setPp(value);
-                                    break;
-                                case "sp":
-                                    character.setSp(value);
-                                    break;
-                                default:
-                                    break;
+                            Map<String, Consumer<Integer>> currencySetterMap = new HashMap<>();
+                            currencySetterMap.put("cp", character::setCp);
+                            currencySetterMap.put("ep", character::setEp);
+                            currencySetterMap.put("gp", character::setGp);
+                            currencySetterMap.put("pp", character::setPp);
+                            currencySetterMap.put("sp", character::setSp);
+
+                            Consumer<Integer> setter = currencySetterMap.get(cname);
+                            if (setter != null) {
+                                setter.accept(value);
+                                db.charDao().update(character);
                             }
-                            db.charDao().update(character);
                         }
 
                     }
