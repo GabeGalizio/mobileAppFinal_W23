@@ -1,18 +1,23 @@
 package com.example.final_project;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 /* TODO: Load data? */
 public class CharacterActivity extends AppCompatActivity {
 
@@ -20,7 +25,7 @@ public class CharacterActivity extends AppCompatActivity {
     TextView tv_name;
 
     int Id, Cp, Ep, Gp, Pp, Sp;
-    String Cname;
+    String Cname, newName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,14 +37,51 @@ public class CharacterActivity extends AppCompatActivity {
 
         Cname = intents.getStringExtra("Name");
         Id = intents.getIntExtra("ID",0);
-        //
+
         Cp = intents.getIntExtra("cp",0);
+        System.out.println(Cp +" cp in chararters");
         Ep = intents.getIntExtra("ep",0);
         Gp = intents.getIntExtra("gp",0);
         Pp = intents.getIntExtra("pp",0);
         Sp = intents.getIntExtra("sp",0);
         System.out.println(Cp+" " +Ep+" "+ Gp+" "+ Pp+" "+ Sp);
         tv_name.setText(Cname);
+
+        tv_name.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CharacterActivity.this);
+                builder.setTitle("Change Name");
+                final EditText input = new EditText(CharacterActivity.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                input.setText(Cname);
+                builder.setView(input);
+                builder.setPositiveButton("Change?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        newName = input.getText().toString();
+                        if (newName.equals(null)){
+                            Toast.makeText(CharacterActivity.this, "Empty name not allowed", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Cname = newName;
+                            tv_name.setText(Cname);
+                            System.out.println(Cname);
+                            Toast.makeText(CharacterActivity.this, "Named changed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+               builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialogInterface, int i) {
+                          dialogInterface.cancel();
+                   }
+               });
+               builder.show();
+               return false;
+            }
+        });
+
+
 
         /* Add currencies as views.
             --> Why do this programmatically? If we are going to implement diff currency systems
@@ -82,6 +124,7 @@ public class CharacterActivity extends AppCompatActivity {
                 Pp=Integer.parseInt(ppCV.getText());
                 Sp=Integer.parseInt(spCV.getText());
                 System.out.println(Cp+" " +Ep+" "+ Gp+" "+ Pp+" "+ Sp);
+                System.out.println("Name going back"+ Cname);
                 backHome.putExtra("cp", Cp);
                 backHome.putExtra("ep", Ep);
                 backHome.putExtra("gp", Gp);

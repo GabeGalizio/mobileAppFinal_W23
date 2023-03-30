@@ -69,6 +69,7 @@ ListView charList;
                 Intent edit_Class = new Intent(MainActivity.this, CharacterActivity.class);
                 edit_Class.putExtra("Name",c.getCharName());
                 edit_Class.putExtra("cp", c.getCp());
+                System.out.println(c.getCp() +" cp before send");
                 edit_Class.putExtra("ep", c.getEp());
                 edit_Class.putExtra("gp", c.getGp());
                 edit_Class.putExtra("pp", c.getPp());
@@ -146,7 +147,7 @@ ListView charList;
         super.onResume();
         Intent intent=getIntent();
         Character chara=new Character();
-
+        listAdapter.notifyDataSetChanged();
         chara.setCharName(intent.getStringExtra("Name"));
         chara.setCp(intent.getIntExtra("cp",0));
         chara.setSp(intent.getIntExtra("sp",0));
@@ -157,6 +158,7 @@ ListView charList;
         execSer.execute(new Runnable() {
             @Override
             public void run() {
+                System.out.println("here");
                 int j=db.charDao().update(chara);
             }
         });
