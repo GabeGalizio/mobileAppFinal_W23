@@ -13,7 +13,9 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
+
 import android.widget.AdapterView;
+
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -110,21 +112,21 @@ public class CharacterActivity extends AppCompatActivity {
                             tv_name.setText(newName);
                             System.out.println(newName);
                             if(finalCurrentChar != null) {
-                                    finalCurrentChar.setCharName(newName);
-                                    db.charDao().update(finalCurrentChar);
+                                finalCurrentChar.setCharName(newName);
+                                db.charDao().update(finalCurrentChar);
                             }
                             Toast.makeText(CharacterActivity.this, "Name changed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-               builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialogInterface, int i) {
-                          dialogInterface.cancel();
-                   }
-               });
-               builder.show();
-               return false;
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                builder.show();
+                return false;
             }
         });
 
@@ -209,12 +211,12 @@ public class CharacterActivity extends AppCompatActivity {
                         characterCurrency1 = finalCurrentChar.getSp();
                         break;
                     default:
-                        // TODO Give notif that currency type is invalid
+                        Toast.makeText(CharacterActivity.this, "Invalid Currency!", Toast.LENGTH_SHORT).show();
                         return;
                 }
 
                 if(amount > characterCurrency1) {
-                    // TODO Give notif there is not enough currency to convert
+                    Toast.makeText(CharacterActivity.this, "Not enough "+characterCurrency1+"!",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -223,6 +225,61 @@ public class CharacterActivity extends AppCompatActivity {
 
 
                 amountTo.setText(Integer.toString((int)converted));
+                android.app.AlertDialog.Builder builder=new android.app.AlertDialog.Builder(CharacterActivity.this);
+                builder.setTitle("Really convert "+amount+currency1+"to "+converted+currency2+"?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch(currency1){
+                            case "cp":
+                                cpCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                break;
+                            case "sp":
+                                spCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                break;
+                            case "gp":
+                                gpCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                break;
+                            case "pp":
+                                ppCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                break;
+                            case "ep":
+                                epCV.setButtonText(Integer.toString(Integer.parseInt(cpCV.getText().toString())-amount));
+                                break;
+
+                            default:
+                                Toast.makeText(CharacterActivity.this,"Invalid currency 1!",Toast.LENGTH_SHORT).show();
+                                return;
+                        }
+                        switch(currency2){
+                            case "cp":
+                                cpCV.setButtonText(Integer.toString((int)converted));
+                                break;
+                            case "sp":
+                                spCV.setButtonText(Integer.toString((int)converted));
+                                break;
+                            case "gp":
+                                gpCV.setButtonText(Integer.toString((int)converted));
+                                break;
+                            case "pp":
+                                ppCV.setButtonText(Integer.toString((int)converted));
+                                break;
+                            case "ep":
+                                epCV.setButtonText(Integer.toString((int)converted));
+                                break;
+                            default:
+                                Toast.makeText(CharacterActivity.this,"Invalid currency 1!",Toast.LENGTH_SHORT).show();
+                                return;
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                builder.show();
             }
         });
 
