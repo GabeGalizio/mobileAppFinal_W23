@@ -35,6 +35,7 @@ public class CharacterActivity extends AppCompatActivity {
     EditText amountFrom;
     TextView amountTo;
     Spinner currencyFrom, currencyTo;
+    Character finalCurrentChar;
 
     private CharDB db;
 
@@ -61,14 +62,13 @@ public class CharacterActivity extends AppCompatActivity {
         currencyTo.setAdapter(aa);
         Cname = intents.getStringExtra("Name");
         Id = intents.getIntExtra("ID",0);
-        Character currentChar = null;
+        finalCurrentChar = null;
         for (Character c: characterList) {
             if(c.getId() == (Id)) {
-                currentChar = c;
+                finalCurrentChar = c;
                 break;
             }
         }
-        Character finalCurrentChar = currentChar;
 
         Cp = finalCurrentChar.getCp();
         Ep = finalCurrentChar.getEp();
@@ -327,28 +327,28 @@ public class CharacterActivity extends AppCompatActivity {
 
                         //Update db entry
                         int value = Integer.parseInt(text);
-                        if(character != null) {
+                        if(finalCurrentChar != null) {
                             // I'm sorry God for this switch case
                             switch(cname) {
                                 case "cp":
-                                    character.setCp(value);
+                                    finalCurrentChar.setCp(value);
                                     break;
                                 case "ep":
-                                    character.setEp(value);
+                                    finalCurrentChar.setEp(value);
                                     break;
                                 case "gp":
-                                    character.setGp(value);
+                                    finalCurrentChar.setGp(value);
                                     break;
                                 case "pp":
-                                    character.setPp(value);
+                                    finalCurrentChar.setPp(value);
                                     break;
                                 case "sp":
-                                    character.setSp(value);
+                                    finalCurrentChar.setSp(value);
                                     break;
                                 default:
                                     break;
                             }
-                            db.charDao().update(character);
+                            db.charDao().update(finalCurrentChar);
                         }
 
                     }
