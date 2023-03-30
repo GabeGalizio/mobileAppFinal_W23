@@ -33,9 +33,10 @@ public class CurrencyView extends CardView {
         layout.setOrientation(LinearLayout.VERTICAL);
         ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         // EDIT TEXT PARAMS
-        et.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
+        //et.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
         et.setText("0");
         et.setTextSize(34);
+        et.setTextIsSelectable(true);
         et.setTextAlignment(TEXT_ALIGNMENT_CENTER);
         // TEXTVIEW PARAMS
         tv.setText("Currency Name");
@@ -48,6 +49,10 @@ public class CurrencyView extends CardView {
 
     public void setEditText(String text) {
         this.et.setText(text);
+    }
+
+    public String getText(){
+        return this.et.getText().toString();
     }
 
     public void setLabelText(String text) {

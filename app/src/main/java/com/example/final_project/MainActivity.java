@@ -140,5 +140,26 @@ ListView charList;
 
 
     }
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        Intent intent=getIntent();
+        Character chara=new Character();
+
+        chara.setCharName(intent.getStringExtra("Name"));
+        chara.setCp(intent.getIntExtra("cp",0));
+        chara.setSp(intent.getIntExtra("sp",0));
+        chara.setGp(intent.getIntExtra("gp",0));
+        chara.setEp(intent.getIntExtra("ep",0));
+        chara.setPp(intent.getIntExtra("pp",0));
+        chara.setId(intent.getIntExtra("ID",0));
+        execSer.execute(new Runnable() {
+            @Override
+            public void run() {
+                int j=db.charDao().update(chara);
+            }
+        });
+    }
 
 }

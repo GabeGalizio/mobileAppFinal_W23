@@ -38,7 +38,7 @@ public class CharacterActivity extends AppCompatActivity {
         Gp = intents.getIntExtra("gp",0);
         Pp = intents.getIntExtra("pp",0);
         Sp = intents.getIntExtra("sp",0);
-
+        System.out.println(Cp+" " +Ep+" "+ Gp+" "+ Pp+" "+ Sp);
         tv_name.setText(Cname);
 
         /* Add currencies as views.
@@ -55,14 +55,20 @@ public class CharacterActivity extends AppCompatActivity {
         parent.addView(secondrow);
         /* If we're editing currencies dynamically then this should be a for loop for each currency
             instead. Make a new horizontal linear layout for every 3 or so currencies */
-        CurrencyView cpCV = addCurrency("CP", 0, this);
-        CurrencyView epCV = addCurrency("EP", 0, this);
-        CurrencyView gpCV = addCurrency("GP", 0, this);
+        CurrencyView cpCV = addCurrency("CP", Cp, this);
+        cpCV.setEditText(Integer.toString(Cp));
+        CurrencyView epCV = addCurrency("EP", Ep, this);
+        epCV.setEditText(Integer.toString(Ep));
+        CurrencyView gpCV = addCurrency("GP", Gp, this);
+        gpCV.setEditText(Integer.toString(Gp));
         firstrow.addView(cpCV);
         firstrow.addView(epCV);
         firstrow.addView(gpCV);
-        CurrencyView ppCV = addCurrency("PP", 0, this);
-        CurrencyView spCV = addCurrency("SP", 0, this);
+
+        CurrencyView ppCV = addCurrency("PP", Pp, this);
+        ppCV.setEditText(Integer.toString(Pp));
+        CurrencyView spCV = addCurrency("SP", Sp, this);
+        spCV.setEditText(Integer.toString(Sp));
         secondrow.addView(ppCV);
         secondrow.addView(spCV);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +76,12 @@ public class CharacterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent backHome = new Intent(CharacterActivity.this, MainActivity.class);
                 backHome.putExtra("Name",Cname);
+                Cp=Integer.parseInt(cpCV.getText());
+                Ep=Integer.parseInt(epCV.getText());
+                Gp=Integer.parseInt(gpCV.getText());
+                Pp=Integer.parseInt(ppCV.getText());
+                Sp=Integer.parseInt(spCV.getText());
+                System.out.println(Cp+" " +Ep+" "+ Gp+" "+ Pp+" "+ Sp);
                 backHome.putExtra("cp", Cp);
                 backHome.putExtra("ep", Ep);
                 backHome.putExtra("gp", Gp);
